@@ -149,7 +149,8 @@ program
 program
     .command('create <url>')
     .description('Create a new link')
-    .action(async (url) => {
+    .option('-s, --slug <slug>', 'Custom slug')
+    .action(async (url, options) => {
         if (url) {
             const headers = {
                 'Authorization': config.apiKey, // Set the API Key from the configuration file
@@ -157,7 +158,7 @@ program
 
             const data = {
                 destination: url,
-                slug: ""
+                slug: options.slug || ""
             };
 
             try {
@@ -176,7 +177,7 @@ program
                     console.error('Failed to create the link:', response.status);
                 }
             } catch (error) {
-                console.error('An error occurred:', error.message);
+                console.error('An error occurred:', error.response.data ? error.response.data.message : error.message);
             }
         } else {
             console.error('Invalid arguments. Please provide the slug, destination, and author.');
