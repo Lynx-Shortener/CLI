@@ -57,10 +57,7 @@ program
     .command('about')
     .description('About Your Lynx Instance')
     .action(async () => {
-        const secret = config.apiKey; // Assuming you have the API key in config.apiKey
-
         const headers = {
-            'secret': secret, // Set the header name for authorization
             'Authorization': config.apiKey, // Set the API Key from the configuration file
         };
 
@@ -98,10 +95,7 @@ program
     .command('account <action>')
     .description('Perform account actions')
     .action(async (action) => {
-        const secret = config.apiKey; // API Key
-
         const headers = {
-            'secret': secret, // Set the header name for authorization
             'Authorization': config.apiKey, // Set the API Key from the configuration file
         };
 
@@ -157,10 +151,7 @@ program
     .description('Create a new link')
     .action(async (url) => {
         if (url) {
-            const secret = config.apiKey; // Assuming you have the API key in config.apiKey
-
             const headers = {
-                'secret': secret, // Set the header name for authorization
                 'Authorization': config.apiKey, // Set the API Key from the configuration file
             };
 
@@ -199,10 +190,7 @@ program
     .requiredOption('-a, --author <author>', 'Author ID')
     .action(async (id, slug, destination, options) => {
         if (id && slug && destination) {
-            const secret = config.apiKey; // Assuming you have the API key in config.apiKey
-
             const headers = {
-                'secret': secret, // Set the header name for authorization
                 'Authorization': config.apiKey, // Set the API Key from the configuration file
             };
 
@@ -254,10 +242,7 @@ program
     .requiredOption('-a, --author <author>', 'Author ID')
     .action(async (ids, options) => {
         if (ids.length > 0) {
-            const secret = config.apiKey; // Assuming you have the API key in config.apiKey
-
             const headers = {
-                'secret': secret, // Set the header name for authorization
                 'Authorization': config.apiKey, // Set the API Key from the configuration file
             };
 
