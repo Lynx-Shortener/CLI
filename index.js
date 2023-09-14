@@ -57,7 +57,6 @@ program
     .command('about')
     .description('About Your Lynx Instance')
     .action(async () => {
-        const apiUrl = config.apiUrl; // Assuming you have already configured the API URL
         const secret = config.apiKey; // Assuming you have the API key in config.apiKey
 
         const headers = {
@@ -66,7 +65,7 @@ program
         };
 
         try {
-            const response = await axios.get(`${apiUrl}/about`, { headers });
+            const response = await axios.get(`${config.apiUrl}/api/about`, { headers });
             if (response.status === 200) {
                 const result = response.data.result;
                 console.log('About Your Lynx Instance:');
@@ -99,7 +98,6 @@ program
     .command('account <action>')
     .description('Perform account actions')
     .action(async (action) => {
-        const apiUrl = config.apiUrl; // API URL
         const secret = config.apiKey; // API Key
 
         const headers = {
@@ -110,7 +108,7 @@ program
         switch (action) {
             case 'get':
                 try {
-                    const response = await axios.get(`${apiUrl}/auth/me`, { headers });
+                    const response = await axios.get(`${config.apiUrl}/api/auth/me`, { headers });
                     if (response.status === 200) {
                         const accountInfo = response.data.result;
                         console.log('Account Information:');
@@ -159,7 +157,6 @@ program
     .description('Create a new link')
     .action(async (url) => {
         if (url) {
-            const apiUrl = config.apiUrl; // Assuming you have already configured the API URL
             const secret = config.apiKey; // Assuming you have the API key in config.apiKey
 
             const headers = {
@@ -168,15 +165,16 @@ program
             };
 
             const data = {
-                secret: config.apiKey,
-                url: url,
+                destination: url,
+                slug: ""
             };
 
             try {
-                const response = await axios.post(`${apiUrl}/sharex`, data, { headers });
+                const response = await axios.post(`${config.apiUrl}/api/link`, data, { headers });
                 if (response.status === 200) {
                     console.log('Link Successfully Created!');
                     console.log(`Destination: ${url}`);
+                    console.log(`URL: ${config.apiUrl}/${response.data.result.slug}`);
                 } else if (response.status === 401) {
                     console.error('Unauthorized:', response.status);
                 } else if (response.status === 409) {
@@ -201,7 +199,6 @@ program
     .requiredOption('-a, --author <author>', 'Author ID')
     .action(async (id, slug, destination, options) => {
         if (id && slug && destination) {
-            const apiUrl = config.apiUrl; // Assuming you have already configured the API URL
             const secret = config.apiKey; // Assuming you have the API key in config.apiKey
 
             const headers = {
@@ -217,7 +214,7 @@ program
             };
 
             try {
-                const response = await axios.patch(`${apiUrl}/link`, data, { headers });
+                const response = await axios.patch(`${config.apiUrl}/api/link`, data, { headers });
                 if (response.status === 200) {
                     const linkInfo = response.data.result;
                     console.log('Link Successfully Updated:');
@@ -257,7 +254,6 @@ program
     .requiredOption('-a, --author <author>', 'Author ID')
     .action(async (ids, options) => {
         if (ids.length > 0) {
-            const apiUrl = config.apiUrl; // Assuming you have already configured the API URL
             const secret = config.apiKey; // Assuming you have the API key in config.apiKey
 
             const headers = {
@@ -271,7 +267,7 @@ program
             };
 
             try {
-                const response = await axios.delete(`${apiUrl}/link`, { data, headers });
+                const response = await axios.delete(`${config.apiUrl}/api/link`, { data, headers });
                 if (response.status === 200) {
                     console.log('Link(s) Successfully Deleted:');
                     console.log(response.data.result);
